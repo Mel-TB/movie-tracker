@@ -7,25 +7,36 @@ import {
   TextStyle,
 } from "./star-ranking-styles";
 
-const StarRanking = ({ maxRating = 5 }) => {
+const StarRanking = ({ maxRating = 5, color = "#ffd83d", onSetRating }) => {
   const [ranking, setRanking] = useState(0);
+  const [tempRanking, setTempRanking] = useState(0);
 
-  const handleRanking = (i) => {
-    setRanking(i + 1);
+  const handleRanking = (ranking) => {
+    setRanking(ranking);
+    onSetRating(ranking);
   };
 
+  const handleHoverInRanking = (i) => {
+    setTempRanking(i + 1);
+  };
+
+  const handleHoverOutRanking = (tempRanking) => {
+    setTempRanking(tempRanking);
+  };
   return (
     <ContainerStyle>
       <StarContainerStyle>
         {Array.from({ length: maxRating }, (_, i) => (
           <StarIcon
             key={i}
+            full={tempRanking ? tempRanking >= i + 1 : ranking >= i + 1}
             onRank={() => handleRanking(i++)}
-            full={ranking >= i + 1}
+            onHoverIn={() => handleHoverInRanking(i++)}
+            onHoverOut={() => handleHoverOutRanking(0)}
           />
         ))}
       </StarContainerStyle>
-      <TextStyle>{ranking || ""}</TextStyle>
+      <TextStyle color={color}>{tempRanking || ranking || ""}</TextStyle>
     </ContainerStyle>
   );
 };

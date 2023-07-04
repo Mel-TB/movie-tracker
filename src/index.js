@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 // import './index.css';
 // import App from './App';
@@ -6,10 +6,25 @@ import reportWebVitals from "./reportWebVitals";
 
 import StarRanking from "./components/star ranking/star-ranking.component";
 
+const Test = () => {
+  const [movieRank, setMovieRank] = useState(0);
+
+  return (
+    <div>
+      <StarRanking
+        maxRating={6}
+        onSetRating={setMovieRank}
+      />
+      <p>This movie was rated {movieRank} stars</p>
+    </div>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StarRanking maxRating={5} />
+    <Test />
   </React.StrictMode>
 );
 

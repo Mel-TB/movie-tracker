@@ -8,9 +8,12 @@ export const ContainerStyle = styled.div`
 
 export const StarContainerStyle = styled.div`
   display: flex;
+  gap: 7px;
 `;
 
 export const TextStyle = styled.p`
   line-height: 1px;
   margin: 0;
+  color: ${(props) => props.color};
+  font-size: 20px;
 `;
