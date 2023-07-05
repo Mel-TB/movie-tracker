@@ -30,7 +30,6 @@ export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 const WatchedListBox = () => {
-  const [isOpen, setIsOpen] = useState(true);
   const [watched, setWatched] = useState(tempWatchedData);
 
   return (

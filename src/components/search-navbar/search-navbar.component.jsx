@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-const SearchNavBar = () => {
-  const [query, setQuery] = useState("");
-
+const SearchNavBar = ({ query, setQuery }) => {
   return (
     <input
       className='search'

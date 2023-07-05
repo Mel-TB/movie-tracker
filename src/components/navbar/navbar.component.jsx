@@ -5,7 +5,7 @@ const NavBar = ({ children }) => {
   return (
     <nav className='nav-bar'>
       <Logo />
-      <SearchNavBar />
+
       {children}
     </nav>
   );
