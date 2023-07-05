@@ -1,6 +1,6 @@
 import { StarEmptyIcon, StarFullIcon, StarStyle } from "./star-icon.styles";
 
-const StarIcon = ({ onRank, full, onHoverIn, onHoverOut, color, size }) => {
+const StarIcon = ({ onRank, full, onHoverIn, onHoverOut }) => {
   return (
     <StarStyle
       onClick={onRank}

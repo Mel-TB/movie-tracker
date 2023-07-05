@@ -14,6 +14,6 @@ export const StarContainerStyle = styled.div`
 export const TextStyle = styled.p`
   line-height: 1px;
   margin: 0;
-  color: ${(props) => props.color};
+  color: #ffd83d;
   font-size: 20px;
 `;
