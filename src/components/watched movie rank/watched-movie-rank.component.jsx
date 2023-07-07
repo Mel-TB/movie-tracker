@@ -1,6 +1,6 @@
 const WatchedMovieRank = ({ movie, onDeleteWatch }) => {
   return (
-    <li>
+    <li key={movie.imdbId}>
       <img
         src={movie.poster}
         alt={`${movie.title} poster`}

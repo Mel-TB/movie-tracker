@@ -26,7 +26,10 @@ const ErrorMessage = ({ message }) => {
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(() => {
+    const storedWatched = localStorage.getItem("watched");
+    return JSON.parse(storedWatched);
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -48,9 +51,13 @@ const App = () => {
     setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
   };
 
+  // Add local storage for watched movies
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
+
   // Fetch movies information from the database ombDB API and return them to the search results. If no movies are found then return error messages.
   // While movies are loading have spinner rendering.
-
   useEffect(() => {
     // Abort controller to clean up fetching requests
     const controller = new AbortController();
@@ -74,7 +81,7 @@ const App = () => {
         setMovies(data.Search);
         setError("");
       } catch (error) {
-        if (!error.name !== "AbortError") {
+        if (error.name !== "AbortError") {
           setError(error.message);
         }
       } finally {

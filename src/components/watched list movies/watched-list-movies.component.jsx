@@ -2,10 +2,7 @@ import WatchedMovieRank from "../watched movie rank/watched-movie-rank.component
 
 const WatchedListMovies = ({ watched, onDeleteWatch }) => {
   return (
-    <ul
-      className='list'
-      key={watched.imdbID}
-    >
+    <ul className='list'>
       {watched.map((movie) => (
         <WatchedMovieRank
           movie={movie}
