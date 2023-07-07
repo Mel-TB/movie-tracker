@@ -8,12 +8,12 @@ import {
 } from "./star-ranking-styles";
 
 const StarRanking = ({
-  maxRating = 5,
+  maxRanking = 5,
   color = "#ffd83d",
-  defaultRating = 0,
+  defaultRanking = 0,
   onSetRanking,
 }) => {
-  const [ranking, setRanking] = useState(defaultRating);
+  const [ranking, setRanking] = useState(defaultRanking);
   const [tempRanking, setTempRanking] = useState(0);
 
   const handleRanking = (ranking) => {
@@ -31,7 +31,7 @@ const StarRanking = ({
   return (
     <ContainerStyle>
       <StarContainerStyle>
-        {Array.from({ length: maxRating }, (_, i) => (
+        {Array.from({ length: maxRanking }, (_, i) => (
           <StarIcon
             key={i}
             full={tempRanking ? tempRanking >= i + 1 : ranking >= i + 1}

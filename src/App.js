@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import NavBar from "./components/navbar/navbar.component";
 import Main from "./components/main/main.component";
@@ -13,7 +13,8 @@ import WatchedListMovies from "./components/watched list movies/watched-list-mov
 import Spinner from "./components/spinner/spinner.component";
 import SearchNavBar from "./components/search-navbar/search-navbar.component";
 
-import MY_API_KEY from "./utils/api";
+import { useMovies } from "./hooks/useMovies";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -25,23 +26,18 @@ const ErrorMessage = ({ message }) => {
 };
 
 const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    const storedWatched = localStorage.getItem("watched");
-    return JSON.parse(storedWatched);
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectId, setSelectId] = useState("");
+
+  // Custom Hooks
+  const { movies, error, isLoading } = useMovies(query);
+  const [watched, setWatched] = useLocalStorageState([], "watched");
 
   const handleSelectMovie = (id) => {
     setSelectId((selectId) => (id === selectId ? null : id));
   };
 
-  const handleCloseMovie = () => {
-    setSelectId(null);
-  };
+  const handleCloseMovie = useCallback(() => setSelectId(null), []);
 
   const handleAddWatch = (movie) => {
     setWatched((watched) => [...watched, movie]);
@@ -50,58 +46,6 @@ const App = () => {
   const handleDeleteWatched = (id) => {
     setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
   };
-
-  // Add local storage for watched movies
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
-
-  // Fetch movies information from the database ombDB API and return them to the search results. If no movies are found then return error messages.
-  // While movies are loading have spinner rendering.
-  useEffect(() => {
-    // Abort controller to clean up fetching requests
-    const controller = new AbortController();
-
-    const fetchMovies = async () => {
-      try {
-        setError("");
-        setIsLoading(true);
-
-        const response = await fetch(
-          `http://www.omdbapi.com/?apikey=${MY_API_KEY}&s=${query}`,
-          { signal: controller.signal }
-        );
-
-        if (!response.ok) throw new Error("Something went wrong");
-
-        const data = await response.json();
-
-        if (data.Response === "False") throw new Error("Not found");
-
-        setMovies(data.Search);
-        setError("");
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          setError(error.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (query.length < 3) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-
-    handleCloseMovie();
-
-    fetchMovies();
-
-    // clean up function
-    return () => controller.abort();
-  }, [query]);
 
   return (
     <>

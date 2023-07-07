@@ -4,6 +4,7 @@ import StarRanking from "../star ranking/star-ranking.component";
 import Spinner from "../spinner/spinner.component";
 
 import MY_API_KEY from "../../utils/api";
+import { useKey } from "../../hooks/useKey";
 
 const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
@@ -11,7 +12,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const [userRating, setUserRating] = useState("");
 
   const isWatched = watched.find((movie) => movie.imdbId === selectId);
-  const watchedUserRating = isWatched?.userRating;
+  const watchedUserRanking = isWatched?.userRating;
 
   const {
     Title: title,
@@ -42,17 +43,8 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     onCloseMovie();
   };
 
-  // Add Keydown Events so the user just have to click on escape keypress to close the movie details
-  useEffect(() => {
-    const callbackListener = (event) => {
-      if (event.code === "Escape") {
-        onCloseMovie();
-      }
-    };
-
-    document.addEventListener("keydown", callbackListener);
-    return () => document.removeEventListener("keydown", callbackListener);
-  }, [onCloseMovie]);
+  // Custom key => add Keydown Events so the user just have to click on escape keypress to close the movie details
+  useKey("Escape", onCloseMovie);
 
   // Select watched movie if === to select Id from the movie list
   useEffect(() => {
@@ -119,7 +111,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
               {!isWatched ? (
                 <>
                   <StarRanking
-                    maxRating={10}
+                    maxRanking={10}
                     onSetRanking={setUserRating}
                   />
 
@@ -134,7 +126,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
                 </>
               ) : (
                 <p>
-                  Already Rated {watchedUserRating} <span>⭐</span>
+                  Already Rated {watchedUserRanking} <span>⭐</span>
                 </p>
               )}
             </div>

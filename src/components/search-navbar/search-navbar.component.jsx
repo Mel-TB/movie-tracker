@@ -1,22 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useKey } from "../../hooks/useKey";
 
 const SearchNavBar = ({ query, setQuery }) => {
   const inputElement = useRef(null);
-  // search bar focused and add keydown event
-  useEffect(() => {
-    const callbackListener = (event) => {
-      if (document.activeElement === inputElement.current) return;
 
-      if (event.code === "Enter") {
-        inputElement.current.focus();
-        setQuery("");
-      }
-    };
+  //  Custom key => Add key 'Enter' events search bar focused and add keydown event using useRef()
+  useKey("Enter", () => {
+    if (document.activeElement === inputElement.current) return;
 
-    document.addEventListener("keydown", callbackListener);
-
-    return () => document.removeEventListener("keydown", callbackListener);
-  }, [setQuery]);
+    inputElement.current.focus();
+    setQuery("");
+  });
 
   return (
     <input
