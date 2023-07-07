@@ -13,7 +13,7 @@ import WatchedListMovies from "./components/watched list movies/watched-list-mov
 import Spinner from "./components/spinner/spinner.component";
 import SearchNavBar from "./components/search-navbar/search-navbar.component";
 
-const MY_KEY = "d107f7a0";
+import MY_API_KEY from "./utils/api";
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -48,14 +48,21 @@ const App = () => {
     setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
   };
 
+  // Fetch movies information from the database ombDB API and return them to the search results. If no movies are found then return error messages.
+  // While movies are loading have spinner rendering.
+
   useEffect(() => {
+    // Abort controller to clean up fetching requests
+    const controller = new AbortController();
+
     const fetchMovies = async () => {
       try {
         setError("");
         setIsLoading(true);
 
         const response = await fetch(
-          `http://www.omdbapi.com/?apikey=${MY_KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${MY_API_KEY}&s=${query}`,
+          { signal: controller.signal }
         );
 
         if (!response.ok) throw new Error("Something went wrong");
@@ -65,8 +72,11 @@ const App = () => {
         if (data.Response === "False") throw new Error("Not found");
 
         setMovies(data.Search);
+        setError("");
       } catch (error) {
-        setError(error.message);
+        if (!error.name !== "AbortError") {
+          setError(error.message);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -78,7 +88,12 @@ const App = () => {
       return;
     }
 
+    handleCloseMovie();
+
     fetchMovies();
+
+    // clean up function
+    return () => controller.abort();
   }, [query]);
 
   return (

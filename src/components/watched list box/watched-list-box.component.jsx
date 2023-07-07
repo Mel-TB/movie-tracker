@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import StarRanking from "../star ranking/star-ranking.component";
 import Spinner from "../spinner/spinner.component";
 
-const MY_KEY = "d107f7a0";
+import MY_API_KEY from "../../utils/api";
 
 const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
@@ -26,6 +26,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     Type: type,
   } = movie;
 
+  // Render informations about the movie/series and add to movieWatched list
   const handleAdd = () => {
     const newWatchedMovie = {
       imdbId: selectId,
@@ -41,11 +42,24 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     onCloseMovie();
   };
 
+  // Add Keydown Events so the user just have to click on escape keypress to close the movie details
+  useEffect(() => {
+    const callbackListener = (event) => {
+      if (event.code === "Escape") {
+        onCloseMovie();
+      }
+    };
+
+    document.addEventListener("keydown", callbackListener);
+    return () => document.removeEventListener("keydown", callbackListener);
+  }, [onCloseMovie]);
+
+  // Select watched movie if === to select Id from the movie list
   useEffect(() => {
     const getMovieDetails = async () => {
       setIsLoading(true);
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${MY_KEY}&i=${selectId}`
+        `http://www.omdbapi.com/?apikey=${MY_API_KEY}&i=${selectId}`
       );
 
       const data = await response.json();
@@ -55,10 +69,14 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     getMovieDetails();
   }, [selectId]);
 
+  // Change page title to show the type and the name
   useEffect(() => {
     if (!title) return;
     document.title = `${type} | ${title}`;
-  }, [title]);
+
+    // Clean up function
+    return () => (document.title = "Night Owl");
+  }, [title, type]);
 
   return (
     <div className='details'>
