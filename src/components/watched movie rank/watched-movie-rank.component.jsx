@@ -1,11 +1,11 @@
-const WatchedMovieRank = ({ movie }) => {
+const WatchedMovieRank = ({ movie, onDeleteWatch }) => {
   return (
     <li>
       <img
-        src={movie.Poster}
-        alt={`${movie.Title} poster`}
+        src={movie.poster}
+        alt={`${movie.title} poster`}
       />
-      <h3>{movie.Title}</h3>
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -19,6 +19,12 @@ const WatchedMovieRank = ({ movie }) => {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        <button
+          className='btn-delete'
+          onClick={() => onDeleteWatch(movie.imdbId)}
+        >
+          X
+        </button>
       </div>
     </li>
   );

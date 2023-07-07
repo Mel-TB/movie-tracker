@@ -6,10 +6,15 @@ import SearchNumResults from "./components/search num results/search-num-results
 import Box from "./components/box/box.component";
 import SearchMovieList from "./components/search movie  list/search-movie-list.component";
 
+import MovieDetails from "./components/watched list box/watched-list-box.component";
+import WatchedSummary from "./components/watched summary/watched-summary.component";
+import WatchedListMovies from "./components/watched list movies/watched-list-movies.component";
+
 import Spinner from "./components/spinner/spinner.component";
 import SearchNavBar from "./components/search-navbar/search-navbar.component";
 
 const MY_KEY = "d107f7a0";
+
 const ErrorMessage = ({ message }) => {
   return (
     <p className='error'>
@@ -21,18 +26,36 @@ const ErrorMessage = ({ message }) => {
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
+  const [selectId, setSelectId] = useState("");
 
-  const tempQuery = "friends";
+  const handleSelectMovie = (id) => {
+    setSelectId((selectId) => (id === selectId ? null : id));
+  };
+
+  const handleCloseMovie = () => {
+    setSelectId(null);
+  };
+
+  const handleAddWatch = (movie) => {
+    setWatched((watched) => [...watched, movie]);
+  };
+
+  const handleDeleteWatched = (id) => {
+    setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
+  };
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        setError("");
         setIsLoading(true);
+
         const response = await fetch(
-          `http://www.omdbapi.com/?apikey=${MY_KEY}&s=${tempQuery}`
+          `http://www.omdbapi.com/?apikey=${MY_KEY}&s=${query}`
         );
 
         if (!response.ok) throw new Error("Something went wrong");
@@ -48,8 +71,15 @@ const App = () => {
         setIsLoading(false);
       }
     };
+
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+
     fetchMovies();
-  }, []);
+  }, [query]);
 
   return (
     <>
@@ -64,8 +94,33 @@ const App = () => {
       <Main>
         <Box>
           {isLoading && <Spinner />}
-          {!isLoading && !error && <SearchMovieList movies={movies} />}
+          {!isLoading && !error && (
+            <SearchMovieList
+              movies={movies}
+              onSelectMovie={handleSelectMovie}
+            />
+          )}
           {error && <ErrorMessage message={error} />}
+        </Box>
+
+        <Box>
+          {selectId ? (
+            <MovieDetails
+              selectId={selectId}
+              onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatch}
+              watched={watched}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+
+              <WatchedListMovies
+                watched={watched}
+                onDeleteWatch={handleDeleteWatched}
+              />
+            </>
+          )}
         </Box>
       </Main>
     </>

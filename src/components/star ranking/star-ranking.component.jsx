@@ -18,7 +18,7 @@ const StarRanking = ({
 
   const handleRanking = (ranking) => {
     setRanking(ranking);
-    // onSetRanking(ranking);
+    onSetRanking(ranking);
   };
 
   const handleHoverInRanking = (i) => {

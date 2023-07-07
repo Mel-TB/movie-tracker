@@ -1,44 +1,130 @@
-import { useState } from "react";
-import WatchedSummary from "../watched summary/watched-summary.component";
-import WatchedListMovies from "../watched list movies/watched-list-movies.component";
-import Box from "../box/box.component";
+import { useEffect, useState } from "react";
 
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
+import StarRanking from "../star ranking/star-ranking.component";
+import Spinner from "../spinner/spinner.component";
 
-export const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+const MY_KEY = "d107f7a0";
 
-const WatchedListBox = () => {
-  const [watched, setWatched] = useState(tempWatchedData);
+const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
+  const [movie, setMovie] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
+
+  const isWatched = watched.find((movie) => movie.imdbId === selectId);
+  const watchedUserRating = isWatched?.userRating;
+
+  const {
+    Title: title,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Genre: genre,
+    Year: year,
+    Type: type,
+  } = movie;
+
+  const handleAdd = () => {
+    const newWatchedMovie = {
+      imdbId: selectId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
+    };
+
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
+  };
+
+  useEffect(() => {
+    const getMovieDetails = async () => {
+      setIsLoading(true);
+      const response = await fetch(
+        `http://www.omdbapi.com/?apikey=${MY_KEY}&i=${selectId}`
+      );
+
+      const data = await response.json();
+      setMovie(data);
+      setIsLoading(false);
+    };
+    getMovieDetails();
+  }, [selectId]);
+
+  useEffect(() => {
+    if (!title) return;
+    document.title = `${type} | ${title}`;
+  }, [title]);
 
   return (
-    <Box>
-      <WatchedSummary watched={watched} />
+    <div className='details'>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <header>
+            {/*        <button
+          className='btn-back'
+          onClick={onCloseMovie}
+        >
+          Close
+        </button>
+*/}
+            <img
+              src={poster}
+              alt={`Poster of {movie}`}
+            />
+            <div className='details-overview'>
+              <h2>{title}</h2>
+              <p>
+                {released} - {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>
+                <span>⭐</span>
+                {imdbRating} IMDB Rating
+              </p>
+            </div>
+          </header>
 
-      <WatchedListMovies watched={watched} />
-    </Box>
+          <section>
+            <p>
+              <em>{plot}</em>
+            </p>
+            <p>Starring {actors} ...</p>
+
+            <div className='rating'>
+              {!isWatched ? (
+                <>
+                  <StarRanking
+                    maxRating={10}
+                    onSetRanking={setUserRating}
+                  />
+
+                  {userRating && (
+                    <button
+                      className='btn-add'
+                      onClick={handleAdd}
+                    >
+                      Watched
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  Already Rated {watchedUserRating} <span>⭐</span>
+                </p>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+    </div>
   );
 };
 
-export default WatchedListBox;
+export default MovieDetails;

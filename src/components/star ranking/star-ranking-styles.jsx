@@ -15,5 +15,5 @@ export const TextStyle = styled.p`
   line-height: 1px;
   margin: 0;
   color: #ffd83d;
-  font-size: 20px;
+  font-size: 15px;
 `;
