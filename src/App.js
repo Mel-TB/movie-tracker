@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import NavBar from "./components/navbar/navbar.component";
 import Main from "./components/main/main.component";
@@ -11,10 +11,13 @@ import WatchedSummary from "./components/watched summary/watched-summary.compone
 import WatchedListMovies from "./components/watched list movies/watched-list-movies.component";
 
 import Spinner from "./components/spinner/spinner.component";
+
 import SearchNavBar from "./components/search-navbar/search-navbar.component";
 
 import { useMovies } from "./hooks/useMovies";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
+
+import GlobalStyle from "./GlobalStyle";
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -49,6 +52,7 @@ const App = () => {
 
   return (
     <>
+      <GlobalStyle />
       <NavBar>
         <SearchNavBar
           query={query}

@@ -1,18 +1,20 @@
-import { useState } from "react";
+// import { useState } from "react";
+import BoxStyle from "./boxStyle.styles";
 
 const SearchResultBox = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className='box'>
-      <button
-        className='btn-toggle'
-        onClick={() => setIsOpen((open) => !open)}
-      >
-        {isOpen ? "–" : "+"}
-      </button>
-      {isOpen && children}
-    </div>
+    <BoxStyle>
+      {
+        //  <button
+        //   onClick={() => setIsOpen((open) => !open)}
+        // >
+        //   {isOpen ? "–" : "+"}
+        // </button>
+      }
+      {children}
+    </BoxStyle>
   );
 };
 

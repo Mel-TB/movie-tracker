@@ -6,15 +6,19 @@ export const SpinnerOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    height: 30vh;
+  }
 `;
 
 export const SpinnerContainer = styled.div`
   display: inline-block;
   width: 50px;
   height: 50px;
-  border: 3px solid rgba(195, 195, 195, 0.6);
+  border: 3px solid rgba(255, 214, 10 0.6);
   border-radius: 50%;
-  border-top-color: #636767;
+  border-top-color: #ffc300;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
   @keyframes spin {

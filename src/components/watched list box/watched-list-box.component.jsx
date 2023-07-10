@@ -5,6 +5,12 @@ import Spinner from "../spinner/spinner.component";
 
 import MY_API_KEY from "../../utils/api";
 import { useKey } from "../../hooks/useKey";
+import {
+  ButtonAdd,
+  Details,
+  DetailsOverview,
+  Rating,
+} from "./watched-list-box.styles";
 
 const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
@@ -71,14 +77,13 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   }, [title, type]);
 
   return (
-    <div className='details'>
+    <Details>
       {isLoading ? (
         <Spinner />
       ) : (
         <>
           <header>
             {/*        <button
-          className='btn-back'
           onClick={onCloseMovie}
         >
           Close
@@ -88,17 +93,17 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
               src={poster}
               alt={`Poster of {movie}`}
             />
-            <div className='details-overview'>
+            <DetailsOverview>
               <h2>{title}</h2>
               <p>
-                {released} - {runtime}
+                {released} - <span>{runtime}</span>
               </p>
               <p>{genre}</p>
               <p>
-                <span>⭐</span>
+                <span className='emoji'> ⭐</span>
                 {imdbRating} IMDB Rating
               </p>
-            </div>
+            </DetailsOverview>
           </header>
 
           <section>
@@ -107,7 +112,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
             </p>
             <p>Starring {actors} ...</p>
 
-            <div className='rating'>
+            <Rating>
               {!isWatched ? (
                 <>
                   <StarRanking
@@ -116,12 +121,7 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
                   />
 
                   {userRating && (
-                    <button
-                      className='btn-add'
-                      onClick={handleAdd}
-                    >
-                      Watched
-                    </button>
+                    <ButtonAdd onClick={handleAdd}>Watched</ButtonAdd>
                   )}
                 </>
               ) : (
@@ -129,11 +129,11 @@ const MovieDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
                   Already Rated {watchedUserRanking} <span>⭐</span>
                 </p>
               )}
-            </div>
+            </Rating>
           </section>
         </>
       )}
-    </div>
+    </Details>
   );
 };
 

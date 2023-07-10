@@ -1,8 +1,10 @@
+import NumResult from "./search-num-results.styles";
+
 const SearchNumResults = ({ movies }) => {
   return (
-    <p className='num-results'>
+    <NumResult>
       Found <strong>{movies.length}</strong> results
-    </p>
+    </NumResult>
   );
 };
 

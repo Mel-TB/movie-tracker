@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useKey } from "../../hooks/useKey";
+import SearchStyle from "./searchBar.styles";
 
 const SearchNavBar = ({ query, setQuery }) => {
   const inputElement = useRef(null);
@@ -13,8 +14,7 @@ const SearchNavBar = ({ query, setQuery }) => {
   });
 
   return (
-    <input
-      className='search'
+    <SearchStyle
       type='text'
       placeholder='Search movies...'
       value={query}

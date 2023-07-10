@@ -1,13 +1,13 @@
-import SearchNavBar from "../search-navbar/search-navbar.component";
 import Logo from "../logo/logo.component";
+import Nav from "./navbar.styles";
 
 const NavBar = ({ children }) => {
   return (
-    <nav className='nav-bar'>
+    <Nav>
       <Logo />
 
       {children}
-    </nav>
+    </Nav>
   );
 };
 

@@ -1,8 +1,9 @@
 import Movies from "../movies/movies.component";
+import List from "./searchMovieList.styles";
 
 const SearchMovieList = ({ movies, onSelectMovie }) => {
   return (
-    <ul className='list list-movies'>
+    <List>
       {movies?.map((movie) => (
         <Movies
           movie={movie}
@@ -10,7 +11,7 @@ const SearchMovieList = ({ movies, onSelectMovie }) => {
           onSelectMovie={onSelectMovie}
         />
       ))}
-    </ul>
+    </List>
   );
 };
 

@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import FontStyles from "./fontStyles.";
 
 // import StarRanking from "./components/star ranking/star-ranking.component";
 
@@ -23,6 +24,7 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <FontStyles />
     <App />
   </React.StrictMode>
 );

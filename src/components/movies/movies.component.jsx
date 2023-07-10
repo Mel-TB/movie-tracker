@@ -1,6 +1,8 @@
+import SearchMovieList from "./movies.styles";
+
 const Movies = ({ movie, onSelectMovie }) => {
   return (
-    <li
+    <SearchMovieList
       onClick={() => onSelectMovie(movie.imdbID)}
       key={movie.imdbID}
     >
@@ -15,7 +17,7 @@ const Movies = ({ movie, onSelectMovie }) => {
           <span>{movie.Year}</span>
         </p>
       </div>
-    </li>
+    </SearchMovieList>
   );
 };
 

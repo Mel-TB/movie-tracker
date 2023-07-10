@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const ContainerStyle = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 40px;
 `;
 
 export const StarContainerStyle = styled.div`

@@ -1,9 +1,11 @@
+import { LogoStyle } from "./logo.styles";
+
 const Logo = () => {
   return (
-    <div className='logo'>
+    <LogoStyle>
       <span role='img'>🦉</span>
       <h1>Night Owl</h1>
-    </div>
+    </LogoStyle>
   );
 };
 

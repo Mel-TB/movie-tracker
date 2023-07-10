@@ -1,3 +1,5 @@
+import WatchedSummaryStyle from "./watched-summary.styles";
+
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
@@ -7,7 +9,7 @@ const WatchedSummary = ({ watched }) => {
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
   return (
-    <div className='summary'>
+    <WatchedSummaryStyle>
       <h2>Movies you watched</h2>
       <div>
         <p>
@@ -15,19 +17,19 @@ const WatchedSummary = ({ watched }) => {
           <span>{watched.length} movies</span>
         </p>
         <p>
-          <span>⭐️</span>
+          <span className='emoji'>⭐️</span>
           <span>{avgImdbRating.toFixed(1)}</span>
         </p>
         <p>
-          <span>🌟</span>
+          <span className='emoji'>🌟</span>
           <span>{avgUserRating.toFixed(1)}</span>
         </p>
         <p>
-          <span>⏳</span>
+          <span className='emoji'>⏳</span>
           <span>{avgRuntime.toFixed(0)} min</span>
         </p>
       </div>
-    </div>
+    </WatchedSummaryStyle>
   );
 };
 
